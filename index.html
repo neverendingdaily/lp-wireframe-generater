@@ -307,31 +307,30 @@
 
   /* ─ LP Output Sections ─ */
   .lp-hero {
-    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    color: #fff; padding: 72px 48px;
+    background: #F8F9FA; /* ごく薄いグレーに変更 */
+    color: #333333; /* ダークグレーに変更 */
+    padding: 72px 48px;
     text-align: center; position: relative; overflow: hidden;
   }
   .lp-frame.mobile .lp-hero { padding: 50px 24px; }
-  .lp-hero::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(108,99,255,0.28) 0%, transparent 60%);
-    pointer-events: none;
-  }
+  .lp-hero::before { display: none; } /* ダークモード用の光の演出を削除 */
+  
   .hero-badge {
     display: inline-block; padding: 5px 16px; border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.18); font-size: 11px;
-    margin-bottom: 20px; letter-spacing: 1.5px; color: rgba(255,255,255,0.55);
+    border: 1px solid rgba(79,110,247,0.3); /* アクセントカラーの枠線 */
+    font-size: 11px;
+    margin-bottom: 20px; letter-spacing: 1.5px; color: #4F6EF7; /* アクセントカラーの文字 */
     font-family: 'Space Mono', monospace;
+    background: #EEF1FF; /* ごく薄い青背景 */
   }
   .hero-catch {
     font-size: clamp(22px, 3.5vw, 38px); font-weight: 900;
     line-height: 1.3; margin-bottom: 20px; font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    color: #1A202C; /* 濃いダークグレーに変更（グラデーション解除） */
   }
   .lp-frame.mobile .hero-catch { font-size: 22px; }
   .hero-sub {
-    font-size: 15px; color: rgba(255,255,255,0.60);
+    font-size: 15px; color: #6B7A99; /* 柔らかいグレーに変更 */
     max-width: 560px; margin: 0 auto 32px; line-height: 1.78;
   }
   .lp-frame.mobile .hero-sub { font-size: 13px; }
@@ -340,11 +339,11 @@
     background: linear-gradient(135deg, #4F6EF7, #7C91FF);
     color: #fff; font-weight: 800; font-size: 15px;
     border-radius: 50px; font-family: 'Inter', sans-serif;
-    box-shadow: 0 8px 28px rgba(79,110,247,0.42);
+    box-shadow: 0 4px 16px rgba(79,110,247,0.3); /* 影を少し柔らかく調整 */
   }
   .lp-frame.mobile .hero-cta { font-size: 14px; padding: 13px 30px; }
   .hero-hint {
-    margin-top: 40px; font-size: 11px; color: rgba(255,255,255,0.22);
+    margin-top: 40px; font-size: 11px; color: #A8B4C8; /* 薄いグレーに変更 */
     font-family: 'Space Mono', monospace; letter-spacing: 1px;
   }
 
@@ -376,14 +375,17 @@
   .prob-text { font-size: 14px; color: #2D3748; line-height: 1.55; padding-top: 7px; }
 
   .lp-solution {
-    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #fff; padding: 72px 48px; text-align: center;
+    background: #FFFFFF; /* 純白に変更 */
+    color: #333333;
+    padding: 72px 48px; text-align: center;
+    border-bottom: 1px solid #EDEEF2; /* 区切り線を追加 */
   }
   .lp-frame.mobile .lp-solution { padding: 50px 22px; }
-  .sol-label { color: rgba(79,110,247,0.7); }
+  .sol-label { color: #4F6EF7; font-weight: 700; font-size: 12px; letter-spacing: 1px; }
   .sol-title {
     font-family: 'Inter', sans-serif; font-weight: 800;
-    font-size: clamp(20px, 2.5vw, 28px); color: #fff; margin-bottom: 20px;
+    font-size: clamp(20px, 2.5vw, 28px); color: #1A202C; /* 濃いグレーに変更 */
+    margin-bottom: 20px; margin-top: 8px;
   }
   .lp-frame.mobile .sol-title { font-size: 22px; }
   .sol-divider {
@@ -391,7 +393,7 @@
     background: linear-gradient(90deg, #4F6EF7, #7C91FF); border-radius: 2px;
   }
   .sol-desc {
-    font-size: 15px; color: rgba(255,255,255,0.60);
+    font-size: 15px; color: #6B7A99; /* 柔らかいグレーに変更 */
     max-width: 660px; margin: 0 auto; line-height: 1.85;
   }
   .lp-frame.mobile .sol-desc { font-size: 13px; }
@@ -424,30 +426,32 @@
   .ben-card-desc { font-size: 13px; color: #718096; line-height: 1.65; }
 
   .lp-cta {
-    background: linear-gradient(135deg, #1a0533, #2d0a5e, #1a0533);
+    background: #F8F9FA; /* ごく薄いグレーに変更 */
     padding: 80px 48px; text-align: center; position: relative; overflow: hidden;
   }
   .lp-frame.mobile .lp-cta { padding: 56px 24px; }
-  .lp-cta::before {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 110%, rgba(79,110,247,0.32) 0%, transparent 60%);
-    pointer-events: none;
-  }
+  .lp-cta::before { display: none; } /* ダークモード用の光の演出を削除 */
+  
   .cta-micro {
-    font-size: 13px; color: rgba(255,255,255,0.42);
-    font-family: 'Inter', sans-serif; margin-bottom: 24px;
+    font-size: 13px; color: #6B7A99; /* 柔らかいグレーに変更 */
+    font-family: 'Inter', sans-serif; margin-bottom: 24px; font-weight: 600;
   }
   .cta-btn-final {
     display: inline-block; padding: 18px 56px;
     background: linear-gradient(135deg, #F6AD55, #ED8936);
     color: #fff; font-weight: 800; font-size: 18px;
     border-radius: 50px; font-family: 'Inter', sans-serif;
-    box-shadow: 0 8px 32px rgba(246,173,85,0.38);
+    box-shadow: 0 6px 20px rgba(246,173,85,0.3); /* 影を柔らかく */
     position: relative; z-index: 1;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cta-btn-final:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(246,173,85,0.4);
   }
   .lp-frame.mobile .cta-btn-final { font-size: 15px; padding: 15px 36px; }
   .cta-safety {
-    margin-top: 20px; font-size: 11px; color: rgba(255,255,255,0.26);
+    margin-top: 20px; font-size: 11px; color: #A8B4C8; /* 薄いグレーに変更 */
     font-family: 'Inter', sans-serif;
   }
 
@@ -516,14 +520,12 @@
 
 <div class="main-layout">
 
-  <!-- Left Panel -->
   <aside class="left-panel">
     <div class="panel-header">
       <div class="panel-title"><div class="p-dot"></div>入力ソース</div>
     </div>
     <div class="input-area">
 
-      <!-- API Key -->
       <div>
         <div class="f-label"><i class="fa-solid fa-key"></i>Gemini API キー</div>
         <div class="api-key-row">
@@ -534,7 +536,6 @@
         </div>
       </div>
 
-      <!-- Textarea -->
       <div style="flex:1;display:flex;flex-direction:column;min-height:240px;">
         <div class="f-label"><i class="fa-regular fa-file-lines"></i>アフィリエイトテキスト</div>
         <div class="textarea-wrap" style="flex:1;">
@@ -555,13 +556,11 @@ Gemini AI がセクション分割し、
         </div>
       </div>
 
-      <!-- Error -->
       <div class="error-box" id="errorBox" style="display:none;">
         <i class="fa-solid fa-circle-exclamation"></i>
         <span id="errorMsg"></span>
       </div>
 
-      <!-- Section tags -->
       <div class="stags-wrap" id="stagWrap" style="display:none;">
         <div class="stags-lbl"><i class="fa-solid fa-circle-check"></i>生成済みセクション</div>
         <div class="stags">
@@ -573,7 +572,6 @@ Gemini AI がセクション分割し、
         </div>
       </div>
 
-      <!-- Button -->
       <button class="gen-btn" id="genBtn" onclick="generateLP()">
         <i class="fa-solid fa-wand-magic-sparkles" style="margin-right:8px;"></i>
         LPワイヤーフレームを生成
@@ -582,7 +580,6 @@ Gemini AI がセクション分割し、
     </div>
   </aside>
 
-  <!-- Right Panel -->
   <section class="right-panel">
     <div class="preview-toolbar">
       <div class="toolbar-left">
