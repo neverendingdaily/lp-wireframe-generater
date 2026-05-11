@@ -7,585 +7,573 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Mono:wght@400;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 
 <style>
   :root {
-    --bg-deep: #0a0c14;
-    --bg-panel: #0f1320;
-    --bg-card: #161b2e;
-    --border: #1e2640;
-    --border-bright: #2d3a5c;
-    --accent: #00e5b0;
-    --accent2: #6c63ff;
-    --accent3: #ff6b6b;
-    --text-primary: #e8eaf6;
-    --text-muted: #6b7aaa;
-    --text-dim: #3d4a6b;
-    --glow: rgba(0, 229, 176, 0.15);
+    /* ─ ベースカラー ─ */
+    --bg-root:     #F4F6F9;   /* 全体背景：ごく薄いブルーグレー */
+    --bg-surface:  #FFFFFF;   /* カード・パネル：純白 */
+    --bg-subtle:   #F8F9FB;   /* 入力欄・インナー */
+    --bg-hover:    #F0F3F8;
+
+    /* ─ ボーダー ─ */
+    --border:      #E4E9F0;
+    --border-focus:#B8C8E8;
+
+    /* ─ テキスト ─ */
+    --text-primary:#2C3E50;
+    --text-muted:  #6B7A99;
+    --text-dim:    #A8B4C8;
+
+    /* ─ アクセント（インディゴ1色） ─ */
+    --accent:      #4F6EF7;
+    --accent-dark: #3A56E0;
+    --accent-light:#EEF1FF;
+    --accent-mid:  #C7D0FC;
+
+    /* ─ シャドウ ─ */
+    --shadow-sm: 0 1px 3px rgba(30,50,100,0.06), 0 2px 8px rgba(30,50,100,0.04);
+    --shadow-md: 0 2px 8px rgba(30,50,100,0.07), 0 8px 24px rgba(30,50,100,0.07);
+    --shadow-lg: 0 4px 16px rgba(30,50,100,0.08), 0 20px 48px rgba(30,50,100,0.10);
   }
 
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     font-family: 'Noto Sans JP', sans-serif;
-    background: var(--bg-deep);
+    background: var(--bg-root);
     color: var(--text-primary);
     min-height: 100vh;
     overflow: hidden;
-    background-image:
-      radial-gradient(ellipse 80% 50% at 20% -10%, rgba(108,99,255,0.08) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 80% 110%, rgba(0,229,176,0.06) 0%, transparent 50%);
+    -webkit-font-smoothing: antialiased;
   }
 
-  .mono { font-family: 'Space Mono', monospace; }
-  .outfit { font-family: 'Outfit', sans-serif; }
-
-  /* Grid noise overlay */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none; z-index: 0;
-  }
-
-  .app-wrapper { position: relative; z-index: 1; }
-
-  /* Header */
+  /* ══ HEADER ══════════════════════════ */
   .header {
-    background: var(--bg-panel);
+    background: var(--bg-surface);
     border-bottom: 1px solid var(--border);
-    padding: 12px 24px;
+    padding: 0 28px;
+    height: 56px;
     display: flex; align-items: center; justify-content: space-between;
+    box-shadow: var(--shadow-sm);
+    position: relative; z-index: 10;
   }
-  .logo-badge {
-    display: inline-flex; align-items: center; gap: 10px;
-  }
+  .logo-wrap { display: flex; align-items: center; gap: 11px; }
   .logo-icon {
-    width: 32px; height: 32px; border-radius: 8px;
-    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    width: 34px; height: 34px; border-radius: 9px;
+    background: linear-gradient(135deg, #4F6EF7, #7C91FF);
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; color: #fff;
+    color: #fff; font-size: 14px;
+    box-shadow: 0 2px 8px rgba(79,110,247,0.28);
   }
-  .logo-text { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 16px; letter-spacing: -0.3px; }
-  .logo-text span { color: var(--accent); }
-
-  .status-chip {
-    font-family: 'Space Mono', monospace; font-size: 10px;
-    padding: 3px 10px; border-radius: 20px;
-    background: rgba(0,229,176,0.1); border: 1px solid rgba(0,229,176,0.3);
-    color: var(--accent); letter-spacing: 0.5px;
+  .logo-text {
+    font-family: 'Inter', sans-serif; font-weight: 700;
+    font-size: 16px; color: var(--text-primary); letter-spacing: -0.3px;
+  }
+  .logo-text em { font-style: normal; color: var(--accent); }
+  .header-badge {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--accent-light); border: 1px solid var(--accent-mid);
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 11px; font-weight: 600; color: var(--accent);
+    font-family: 'Inter', sans-serif; letter-spacing: 0.3px;
+  }
+  .kbd-hint {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 11px; color: var(--text-dim); font-family: 'Inter', sans-serif;
+  }
+  .kbd {
+    background: var(--bg-subtle); border: 1px solid var(--border);
+    border-radius: 5px; padding: 2px 6px; font-size: 10px;
+    color: var(--text-muted); box-shadow: 0 1px 0 var(--border);
+    font-family: 'Space Mono', monospace;
   }
 
-  /* Main layout */
+  /* ══ LAYOUT ══════════════════════════ */
   .main-layout {
     display: grid;
-    grid-template-columns: 420px 1fr;
-    height: calc(100vh - 57px);
+    grid-template-columns: 400px 1fr;
+    height: calc(100vh - 56px);
     overflow: hidden;
   }
 
-  /* Left panel */
+  /* ══ LEFT PANEL ══════════════════════ */
   .left-panel {
-    background: var(--bg-panel);
+    background: var(--bg-surface);
     border-right: 1px solid var(--border);
     display: flex; flex-direction: column;
     overflow: hidden;
+    box-shadow: 2px 0 10px rgba(30,50,100,0.04);
   }
   .panel-header {
-    padding: 16px 20px 12px;
+    padding: 18px 24px 14px;
     border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
   }
   .panel-title {
-    font-family: 'Outfit', sans-serif; font-weight: 600;
-    font-size: 13px; color: var(--text-muted); letter-spacing: 0.5px;
-    text-transform: uppercase;
+    font-family: 'Inter', sans-serif; font-weight: 600;
+    font-size: 12px; color: var(--text-muted);
+    letter-spacing: 0.8px; text-transform: uppercase;
+    display: flex; align-items: center; gap: 8px;
   }
-  .panel-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--accent); box-shadow: 0 0 6px var(--accent);
+  .p-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--accent);
   }
 
   .input-area {
-    flex: 1; padding: 16px;
-    display: flex; flex-direction: column; gap: 12px;
+    flex: 1; padding: 20px;
+    display: flex; flex-direction: column; gap: 16px;
     overflow-y: auto;
   }
+  .input-area::-webkit-scrollbar { width: 4px; }
+  .input-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-  .api-key-row {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 10px 14px;
+  /* Field label */
+  .f-label {
+    font-family: 'Inter', sans-serif; font-weight: 600;
+    font-size: 12px; color: var(--text-muted);
+    display: flex; align-items: center; gap: 6px;
+    margin-bottom: 7px;
   }
-  .api-key-row label {
-    font-size: 11px; color: var(--text-muted); white-space: nowrap;
-    font-family: 'Space Mono', monospace;
+  .f-label i { color: var(--accent); font-size: 10px; }
+
+  /* API key row */
+  .api-key-row {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 10px 14px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .api-key-row:focus-within {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(79,110,247,0.09), var(--shadow-sm);
   }
   .api-key-input {
     flex: 1; background: transparent; border: none; outline: none;
-    color: var(--text-primary); font-size: 12px;
+    color: var(--text-primary); font-size: 13px;
     font-family: 'Space Mono', monospace;
   }
   .api-key-input::placeholder { color: var(--text-dim); }
+  .eye-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--text-dim); font-size: 13px; padding: 2px;
+    transition: color .2s;
+  }
+  .eye-btn:hover { color: var(--text-muted); }
 
+  /* Textarea */
   .textarea-wrap { flex: 1; position: relative; }
   .main-textarea {
-    width: 100%; height: 100%; min-height: 300px;
-    background: var(--bg-card); border: 1px solid var(--border);
+    width: 100%; height: 100%; min-height: 240px;
+    background: var(--bg-surface); border: 1px solid var(--border);
     border-radius: 12px; padding: 16px;
-    color: var(--text-primary); font-size: 13px; line-height: 1.7;
+    color: var(--text-primary); font-size: 13px; line-height: 1.78;
     resize: none; outline: none;
     font-family: 'Noto Sans JP', sans-serif;
-    transition: border-color 0.2s;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .2s, box-shadow .2s;
   }
-  .main-textarea:focus { border-color: var(--border-bright); }
+  .main-textarea:focus {
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 3px rgba(79,110,247,0.09), var(--shadow-sm);
+  }
   .main-textarea::placeholder { color: var(--text-dim); }
-
   .char-count {
     position: absolute; bottom: 10px; right: 14px;
     font-size: 10px; color: var(--text-dim);
     font-family: 'Space Mono', monospace;
   }
 
+  /* Error */
+  .error-box {
+    background: #FFF5F5; border: 1px solid #FECACA;
+    border-radius: 10px; padding: 12px 16px; font-size: 12px;
+    color: #C53030; display: flex; gap: 10px; align-items: flex-start;
+    box-shadow: var(--shadow-sm);
+  }
+  .error-box i { flex-shrink: 0; margin-top: 1px; }
+
+  /* Section tags */
+  .stags-wrap { display: flex; flex-direction: column; gap: 8px; }
+  .stags-lbl {
+    font-size: 11px; color: var(--text-dim);
+    font-family: 'Inter', sans-serif;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .stags-lbl i { color: #34D399; font-size: 10px; }
+  .stags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .stag {
+    font-size: 11px; padding: 3px 11px; border-radius: 20px;
+    font-family: 'Inter', sans-serif; font-weight: 600;
+    border: 1px solid;
+  }
+  .s-hero     { border-color:#FCD34D; color:#92400E; background:#FFFBEB; }
+  .s-problem  { border-color:#FCA5A5; color:#991B1B; background:#FEF2F2; }
+  .s-solution { border-color:#6EE7B7; color:#065F46; background:#ECFDF5; }
+  .s-benefits { border-color:#93C5FD; color:#1E40AF; background:#EFF6FF; }
+  .s-cta      { border-color:#C4B5FD; color:#5B21B6; background:#F5F3FF; }
+
   /* Generate button */
   .gen-btn {
-    width: 100%; padding: 14px;
-    border-radius: 12px; border: none; cursor: pointer;
-    font-family: 'Outfit', sans-serif; font-weight: 700;
-    font-size: 15px; letter-spacing: 0.3px;
-    background: linear-gradient(135deg, var(--accent2) 0%, var(--accent) 100%);
-    color: #fff; position: relative; overflow: hidden;
-    transition: all 0.3s; box-shadow: 0 4px 20px rgba(108,99,255,0.3);
+    width: 100%; padding: 13px 20px;
+    border-radius: 11px; border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-weight: 700;
+    font-size: 14px; color: #fff;
+    background: var(--accent);
+    box-shadow: 0 2px 8px rgba(79,110,247,0.28), 0 4px 20px rgba(79,110,247,0.14);
+    transition: background .2s, box-shadow .2s, transform .15s;
   }
-  .gen-btn::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
-    transform: translateX(-100%);
-    transition: transform 0.4s;
+  .gen-btn:hover {
+    background: var(--accent-dark);
+    box-shadow: 0 4px 12px rgba(79,110,247,0.38), 0 8px 28px rgba(79,110,247,0.18);
+    transform: translateY(-1px);
   }
-  .gen-btn:hover::before { transform: translateX(100%); }
-  .gen-btn:hover { box-shadow: 0 6px 28px rgba(108,99,255,0.5); transform: translateY(-1px); }
-  .gen-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .gen-btn:active { transform: translateY(0); }
+  .gen-btn:disabled { opacity: .55; cursor: not-allowed; transform: none; box-shadow: none; }
 
-  /* Loading spinner */
   .spinner {
-    display: inline-block; width: 16px; height: 16px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
+    display: inline-block; width: 15px; height: 15px;
+    border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff;
+    border-radius: 50%; animation: spin .75s linear infinite; vertical-align: middle;
   }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* Section breakdown preview (left) */
-  .section-tags {
-    display: flex; flex-wrap: wrap; gap: 6px; padding-top: 4px;
-  }
-  .section-tag {
-    font-size: 10px; padding: 3px 10px; border-radius: 20px;
-    font-family: 'Space Mono', monospace;
-    border: 1px solid; opacity: 0.7;
-  }
-  .tag-hero { border-color: #ff6b6b33; color: #ff6b6b; background: #ff6b6b11; }
-  .tag-problem { border-color: #ffa94d33; color: #ffa94d; background: #ffa94d11; }
-  .tag-solution { border-color: #69db7c33; color: #69db7c; background: #69db7c11; }
-  .tag-benefits { border-color: #74c0fc33; color: #74c0fc; background: #74c0fc11; }
-  .tag-cta { border-color: #da77f233; color: #da77f2; background: #da77f211; }
-
-  /* Right panel */
+  /* ══ RIGHT PANEL ═════════════════════ */
   .right-panel {
     display: flex; flex-direction: column;
-    background: #080a11;
-    overflow: hidden;
+    background: var(--bg-root); overflow: hidden;
   }
-
   .preview-toolbar {
-    background: var(--bg-panel);
-    border-bottom: 1px solid var(--border);
-    padding: 10px 20px;
+    background: var(--bg-surface); border-bottom: 1px solid var(--border);
+    padding: 10px 24px;
     display: flex; align-items: center; justify-content: space-between;
-    flex-shrink: 0;
+    flex-shrink: 0; box-shadow: var(--shadow-sm);
   }
-  .toolbar-left { display: flex; align-items: center; gap: 12px; }
-
-  /* Toggle switch */
+  .toolbar-left { display: flex; align-items: center; gap: 14px; }
   .view-toggle {
-    display: flex; background: var(--bg-card); border: 1px solid var(--border);
-    border-radius: 10px; padding: 3px; gap: 2px;
+    display: flex; background: var(--bg-subtle);
+    border: 1px solid var(--border); border-radius: 9px; padding: 3px; gap: 2px;
+    box-shadow: inset 0 1px 3px rgba(30,50,100,0.05);
   }
   .toggle-btn {
-    padding: 6px 14px; border-radius: 7px; border: none; cursor: pointer;
-    font-size: 12px; font-weight: 600; font-family: 'Outfit', sans-serif;
-    transition: all 0.2s; color: var(--text-muted); background: transparent;
+    padding: 6px 14px; border-radius: 6px; border: none; cursor: pointer;
+    font-size: 12px; font-weight: 600; font-family: 'Inter', sans-serif;
+    transition: all .2s; color: var(--text-muted); background: transparent;
     display: flex; align-items: center; gap: 6px;
   }
   .toggle-btn.active {
-    background: var(--bg-panel); color: var(--text-primary);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+    background: var(--bg-surface); color: var(--text-primary);
+    box-shadow: var(--shadow-sm);
   }
   .toggle-btn i { font-size: 11px; }
+  .view-lbl { font-size: 11px; color: var(--text-dim); font-family: 'Space Mono', monospace; }
 
-  .toolbar-actions { display: flex; align-items: center; gap: 8px; }
-  .toolbar-chip {
-    font-size: 10px; padding: 4px 10px; border-radius: 6px;
-    background: var(--bg-card); border: 1px solid var(--border);
-    color: var(--text-muted); font-family: 'Space Mono', monospace;
-    cursor: pointer; transition: all 0.2s;
+  .toolbar-right { display: flex; align-items: center; gap: 10px; }
+  .copy-btn {
+    display: none; align-items: center; gap: 6px;
+    padding: 6px 14px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg-surface);
+    cursor: pointer; font-size: 12px; font-weight: 600;
+    color: var(--text-muted); font-family: 'Inter', sans-serif;
+    box-shadow: var(--shadow-sm); transition: all .2s;
   }
-  .toolbar-chip:hover { border-color: var(--border-bright); color: var(--text-primary); }
+  .copy-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .live-tag {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11px; color: var(--text-dim); font-family: 'Inter', sans-serif;
+  }
+  .live-tag i { color: #34D399; font-size: 8px; }
 
-  /* Preview scroll area */
+  /* Preview */
   .preview-scroll {
     flex: 1; overflow-y: auto; overflow-x: hidden;
-    padding: 30px 20px;
+    padding: 36px 28px;
     display: flex; justify-content: center; align-items: flex-start;
+    position: relative;
   }
-  .preview-scroll::-webkit-scrollbar { width: 4px; }
-  .preview-scroll::-webkit-scrollbar-track { background: transparent; }
-  .preview-scroll::-webkit-scrollbar-thumb { background: var(--border-bright); border-radius: 2px; }
+  .preview-scroll::-webkit-scrollbar { width: 5px; }
+  .preview-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
   /* LP Frame */
   .lp-frame {
-    background: #fff;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.05);
-    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-    width: 100%;
-    max-width: 1000px;
-    min-height: 400px;
+    background: #fff; border-radius: 16px; overflow: hidden;
+    box-shadow: var(--shadow-lg), 0 0 0 1px rgba(30,50,100,0.04);
+    transition: all .4s cubic-bezier(.4,0,.2,1);
+    width: 100%; max-width: 960px; min-height: 400px;
   }
   .lp-frame.mobile { width: 375px; }
 
-  /* ── LP Sections ── */
-  /* Hero */
+  /* ─ LP Output Sections ─ */
   .lp-hero {
     background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-    color: #fff; padding: 70px 40px;
+    color: #fff; padding: 72px 48px;
     text-align: center; position: relative; overflow: hidden;
   }
   .lp-frame.mobile .lp-hero { padding: 50px 24px; }
   .lp-hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 0%, rgba(108,99,255,0.3) 0%, transparent 60%);
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(108,99,255,0.28) 0%, transparent 60%);
     pointer-events: none;
   }
   .hero-badge {
     display: inline-block; padding: 5px 16px; border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.2); font-size: 11px;
-    margin-bottom: 20px; letter-spacing: 1px; color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.18); font-size: 11px;
+    margin-bottom: 20px; letter-spacing: 1.5px; color: rgba(255,255,255,0.55);
     font-family: 'Space Mono', monospace;
   }
   .hero-catch {
-    font-size: clamp(24px, 4vw, 42px); font-weight: 900;
-    line-height: 1.3; margin-bottom: 20px;
-    font-family: 'Outfit', sans-serif;
+    font-size: clamp(22px, 3.5vw, 38px); font-weight: 900;
+    line-height: 1.3; margin-bottom: 20px; font-family: 'Inter', sans-serif;
     background: linear-gradient(135deg, #fff 0%, #a5b4fc 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .lp-frame.mobile .hero-catch { font-size: 24px; }
+  .lp-frame.mobile .hero-catch { font-size: 22px; }
   .hero-sub {
-    font-size: 15px; color: rgba(255,255,255,0.65);
-    max-width: 600px; margin: 0 auto 32px; line-height: 1.7;
+    font-size: 15px; color: rgba(255,255,255,0.60);
+    max-width: 560px; margin: 0 auto 32px; line-height: 1.78;
   }
   .lp-frame.mobile .hero-sub { font-size: 13px; }
-  .hero-cta-btn {
-    display: inline-block; padding: 16px 48px;
-    background: linear-gradient(135deg, #00e5b0, #6c63ff);
-    color: #fff; font-weight: 800; font-size: 17px;
-    border-radius: 50px; font-family: 'Outfit', sans-serif;
-    box-shadow: 0 8px 30px rgba(0,229,176,0.4);
-    letter-spacing: 0.3px;
+  .hero-cta {
+    display: inline-block; padding: 15px 46px;
+    background: linear-gradient(135deg, #4F6EF7, #7C91FF);
+    color: #fff; font-weight: 800; font-size: 15px;
+    border-radius: 50px; font-family: 'Inter', sans-serif;
+    box-shadow: 0 8px 28px rgba(79,110,247,0.42);
   }
-  .lp-frame.mobile .hero-cta-btn { font-size: 15px; padding: 14px 32px; }
-  .hero-scroll-hint {
-    margin-top: 40px; font-size: 11px; color: rgba(255,255,255,0.3);
+  .lp-frame.mobile .hero-cta { font-size: 14px; padding: 13px 30px; }
+  .hero-hint {
+    margin-top: 40px; font-size: 11px; color: rgba(255,255,255,0.22);
     font-family: 'Space Mono', monospace; letter-spacing: 1px;
   }
 
-  /* Problem */
-  .lp-problem {
-    background: #fafafa; padding: 60px 40px;
-    border-bottom: 2px solid #f0f0f0;
+  .lp-problem { background: #FAFBFC; padding: 64px 48px; border-bottom: 1px solid #EDEEF2; }
+  .lp-frame.mobile .lp-problem { padding: 48px 22px; }
+  .lp-sec-label {
+    font-size: 10px; font-family: 'Inter', sans-serif; font-weight: 700;
+    letter-spacing: 2px; color: #A0AEC0; text-transform: uppercase; margin-bottom: 10px;
   }
-  .lp-frame.mobile .lp-problem { padding: 48px 20px; }
-  .section-label {
-    font-size: 10px; font-family: 'Space Mono', monospace;
-    letter-spacing: 2px; color: #999; text-transform: uppercase;
-    margin-bottom: 10px;
+  .lp-sec-title {
+    font-family: 'Inter', sans-serif; font-weight: 800;
+    font-size: clamp(18px, 2.2vw, 24px); color: #1A202C;
+    margin-bottom: 32px; line-height: 1.42;
   }
-  .section-title {
-    font-family: 'Outfit', sans-serif; font-weight: 800;
-    font-size: clamp(18px, 2.5vw, 28px); color: #1a1a2e;
-    margin-bottom: 32px; line-height: 1.4;
-  }
-  .lp-frame.mobile .section-title { font-size: 20px; }
-  .problem-list { display: flex; flex-direction: column; gap: 12px; }
-  .problem-item {
+  .lp-frame.mobile .lp-sec-title { font-size: 20px; }
+  .prob-list { display: flex; flex-direction: column; gap: 12px; }
+  .prob-item {
     display: flex; align-items: flex-start; gap: 14px;
-    background: #fff; border-radius: 12px;
-    padding: 16px 20px;
-    border: 1px solid #eee;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    background: #fff; border-radius: 12px; padding: 16px 20px;
+    border: 1px solid #EDEEF2;
+    box-shadow: 0 1px 4px rgba(30,50,100,0.05), 0 4px 12px rgba(30,50,100,0.04);
   }
-  .problem-icon {
-    width: 32px; height: 32px; border-radius: 8px;
-    background: linear-gradient(135deg, #ff6b6b22, #ff6b6b11);
-    border: 1px solid #ff6b6b33;
+  .prob-icon {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: #FFF5F5; border: 1px solid #FED7D7;
     display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; color: #ff6b6b; font-size: 14px;
+    flex-shrink: 0; color: #E53E3E; font-size: 13px;
   }
-  .problem-text { font-size: 14px; color: #333; line-height: 1.5; padding-top: 6px; }
+  .prob-text { font-size: 14px; color: #2D3748; line-height: 1.55; padding-top: 7px; }
 
-  /* Solution */
   .lp-solution {
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    color: #fff; padding: 70px 40px; text-align: center;
+    color: #fff; padding: 72px 48px; text-align: center;
   }
-  .lp-frame.mobile .lp-solution { padding: 50px 20px; }
-  .solution-label { color: rgba(0,229,176,0.7); }
-  .solution-title {
-    font-family: 'Outfit', sans-serif; font-weight: 800;
-    font-size: clamp(20px, 3vw, 32px); color: #fff; margin-bottom: 20px;
+  .lp-frame.mobile .lp-solution { padding: 50px 22px; }
+  .sol-label { color: rgba(79,110,247,0.7); }
+  .sol-title {
+    font-family: 'Inter', sans-serif; font-weight: 800;
+    font-size: clamp(20px, 2.5vw, 28px); color: #fff; margin-bottom: 20px;
   }
-  .lp-frame.mobile .solution-title { font-size: 22px; }
-  .solution-desc {
-    font-size: 15px; color: rgba(255,255,255,0.65);
-    max-width: 700px; margin: 0 auto; line-height: 1.8;
+  .lp-frame.mobile .sol-title { font-size: 22px; }
+  .sol-divider {
+    width: 48px; height: 3px; margin: 24px auto;
+    background: linear-gradient(90deg, #4F6EF7, #7C91FF); border-radius: 2px;
   }
-  .lp-frame.mobile .solution-desc { font-size: 13px; }
-  .solution-line {
-    width: 60px; height: 3px; margin: 24px auto;
-    background: linear-gradient(90deg, #00e5b0, #6c63ff);
-    border-radius: 2px;
+  .sol-desc {
+    font-size: 15px; color: rgba(255,255,255,0.60);
+    max-width: 660px; margin: 0 auto; line-height: 1.85;
   }
+  .lp-frame.mobile .sol-desc { font-size: 13px; }
 
-  /* Benefits */
-  .lp-benefits { background: #fff; padding: 70px 40px; }
-  .lp-frame.mobile .lp-benefits { padding: 50px 20px; }
-  .benefits-title {
-    font-family: 'Outfit', sans-serif; font-weight: 800;
-    font-size: clamp(18px, 2.5vw, 28px); color: #1a1a2e;
+  .lp-benefits { background: #fff; padding: 72px 48px; }
+  .lp-frame.mobile .lp-benefits { padding: 50px 22px; }
+  .ben-title {
+    font-family: 'Inter', sans-serif; font-weight: 800;
+    font-size: clamp(18px, 2.2vw, 24px); color: #1A202C;
     margin-bottom: 40px; text-align: center;
   }
-  .lp-frame.mobile .benefits-title { font-size: 20px; margin-bottom: 28px; }
-  .benefits-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+  .lp-frame.mobile .ben-title { font-size: 20px; margin-bottom: 28px; }
+  .ben-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .lp-frame.mobile .ben-grid { grid-template-columns: 1fr; gap: 14px; }
+  .ben-card {
+    background: #F8FAFF; border-radius: 14px; padding: 28px 22px;
+    border: 1px solid #E8EDFF; text-align: center;
+    box-shadow: 0 1px 4px rgba(79,110,247,0.06), 0 4px 16px rgba(79,110,247,0.05);
   }
-  .lp-frame.mobile .benefits-grid { grid-template-columns: 1fr; gap: 14px; }
-  .benefit-card {
-    background: linear-gradient(145deg, #f8f9ff, #f0f2ff);
-    border-radius: 16px; padding: 28px 22px;
-    border: 1px solid #e8ebff;
-    text-align: center; position: relative; overflow: hidden;
+  .ben-num {
+    font-family: 'Inter', sans-serif; font-weight: 800; font-size: 34px;
+    background: linear-gradient(135deg, #4F6EF7, #7C91FF);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 12px;
   }
-  .benefit-card::before {
-    content: '';
-    position: absolute; top: -20px; right: -20px;
-    width: 80px; height: 80px; border-radius: 50%;
-    background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(0,229,176,0.05));
+  .ben-card-title {
+    font-family: 'Inter', sans-serif; font-weight: 700;
+    font-size: 15px; color: #1A202C; margin-bottom: 10px;
   }
-  .benefit-num {
-    font-family: 'Outfit', sans-serif; font-weight: 800;
-    font-size: 36px; color: transparent;
-    background: linear-gradient(135deg, #6c63ff, #00e5b0);
-    -webkit-background-clip: text; margin-bottom: 12px;
-  }
-  .benefit-title {
-    font-family: 'Outfit', sans-serif; font-weight: 700;
-    font-size: 15px; color: #1a1a2e; margin-bottom: 10px;
-  }
-  .benefit-desc { font-size: 13px; color: #666; line-height: 1.6; }
+  .ben-card-desc { font-size: 13px; color: #718096; line-height: 1.65; }
 
-  /* CTA Bottom */
-  .lp-cta-bottom {
+  .lp-cta {
     background: linear-gradient(135deg, #1a0533, #2d0a5e, #1a0533);
-    padding: 80px 40px; text-align: center;
-    position: relative; overflow: hidden;
+    padding: 80px 48px; text-align: center; position: relative; overflow: hidden;
   }
-  .lp-frame.mobile .lp-cta-bottom { padding: 56px 24px; }
-  .lp-cta-bottom::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 50% 100%, rgba(108,99,255,0.4) 0%, transparent 60%);
+  .lp-frame.mobile .lp-cta { padding: 56px 24px; }
+  .lp-cta::before {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 110%, rgba(79,110,247,0.32) 0%, transparent 60%);
     pointer-events: none;
   }
-  .microcopy {
-    font-size: 13px; color: rgba(255,255,255,0.5);
-    font-family: 'Space Mono', monospace;
-    margin-bottom: 24px; letter-spacing: 0.5px;
+  .cta-micro {
+    font-size: 13px; color: rgba(255,255,255,0.42);
+    font-family: 'Inter', sans-serif; margin-bottom: 24px;
   }
-  .cta-final-btn {
-    display: inline-block; padding: 20px 60px;
-    background: linear-gradient(135deg, #ff6b6b, #ffa94d);
-    color: #fff; font-weight: 800; font-size: 19px;
-    border-radius: 50px; font-family: 'Outfit', sans-serif;
-    box-shadow: 0 10px 40px rgba(255,107,107,0.4);
+  .cta-btn-final {
+    display: inline-block; padding: 18px 56px;
+    background: linear-gradient(135deg, #F6AD55, #ED8936);
+    color: #fff; font-weight: 800; font-size: 18px;
+    border-radius: 50px; font-family: 'Inter', sans-serif;
+    box-shadow: 0 8px 32px rgba(246,173,85,0.38);
     position: relative; z-index: 1;
   }
-  .lp-frame.mobile .cta-final-btn { font-size: 16px; padding: 16px 36px; }
+  .lp-frame.mobile .cta-btn-final { font-size: 15px; padding: 15px 36px; }
   .cta-safety {
-    margin-top: 20px; font-size: 11px; color: rgba(255,255,255,0.3);
-    font-family: 'Space Mono', monospace;
+    margin-top: 20px; font-size: 11px; color: rgba(255,255,255,0.26);
+    font-family: 'Inter', sans-serif;
   }
 
   /* Empty state */
   .empty-state {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
-    height: 100%; gap: 16px; color: var(--text-dim);
-    padding: 40px; text-align: center;
+    height: 100%; gap: 16px; padding: 48px; text-align: center;
   }
   .empty-icon {
-    width: 80px; height: 80px; border-radius: 20px;
-    background: var(--bg-card); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 32px;
+    width: 72px; height: 72px; border-radius: 18px;
+    background: var(--bg-surface); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; font-size: 28px;
+    box-shadow: var(--shadow-md);
   }
   .empty-title {
-    font-family: 'Outfit', sans-serif; font-weight: 700;
-    font-size: 18px; color: var(--text-muted);
+    font-family: 'Inter', sans-serif; font-weight: 700;
+    font-size: 17px; color: var(--text-muted);
   }
-  .empty-sub { font-size: 13px; max-width: 300px; line-height: 1.6; }
+  .empty-sub { font-size: 13px; color: var(--text-dim); max-width: 280px; line-height: 1.65; }
+  .skel-wrap { display:flex;flex-direction:column;gap:8px;width:100%;max-width:260px;margin-top:8px; }
+  .skel { height:10px;background:var(--bg-surface);border-radius:5px;border:1px solid var(--border); }
 
-  /* Error state */
-  .error-box {
-    background: rgba(255,107,107,0.1); border: 1px solid rgba(255,107,107,0.3);
-    border-radius: 10px; padding: 14px 18px; font-size: 13px;
-    color: #ff6b6b; display: flex; gap: 10px; align-items: flex-start;
-  }
-
-  /* Animations */
-  @keyframes fadeSlideIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .animate-in {
-    animation: fadeSlideIn 0.5s ease-out forwards;
-  }
-  .animate-in-delay1 { animation-delay: 0.05s; opacity: 0; }
-  .animate-in-delay2 { animation-delay: 0.12s; opacity: 0; }
-  .animate-in-delay3 { animation-delay: 0.2s; opacity: 0; }
-  .animate-in-delay4 { animation-delay: 0.28s; opacity: 0; }
-  .animate-in-delay5 { animation-delay: 0.36s; opacity: 0; }
-
-  @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 0 0 rgba(0,229,176,0.3); }
-    50% { box-shadow: 0 0 0 6px rgba(0,229,176,0); }
-  }
-  .panel-dot { animation: pulse-glow 2s ease-in-out infinite; }
-
-  /* Loading overlay */
+  /* Loading */
   .loading-overlay {
     position: absolute; inset: 0; z-index: 10;
-    background: rgba(8,10,17,0.85);
+    background: rgba(244,246,249,0.84);
     display: flex; flex-direction: column;
     align-items: center; justify-content: center; gap: 16px;
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(6px);
   }
   .loading-ring {
-    width: 56px; height: 56px; border-radius: 50%;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    animation: spin 1s linear infinite;
+    width: 52px; height: 52px; border-radius: 50%;
+    border: 3px solid var(--border); border-top-color: var(--accent);
+    animation: spin .9s linear infinite;
   }
-  .loading-text { font-size: 13px; color: var(--text-muted); font-family: 'Space Mono', monospace; }
-  .loading-dots::after {
-    content: '...';
-    animation: dots 1.2s steps(4, end) infinite;
-  }
-  @keyframes dots {
-    0%, 100% { content: ''; }
-    25% { content: '.'; }
-    50% { content: '..'; }
-    75% { content: '...'; }
-  }
+  .loading-lbl { font-size:13px;font-weight:600;color:var(--text-muted);font-family:'Inter',sans-serif; }
+  .loading-sub { font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:-8px; }
+  .ldots::after { content:'';animation:dots 1.4s steps(4,end) infinite; }
+  @keyframes dots { 0%,100%{content:''} 25%{content:'.'} 50%{content:'..'} 75%{content:'...'} }
 
-  /* Scrollbar */
-  .input-area::-webkit-scrollbar { width: 3px; }
-  .input-area::-webkit-scrollbar-track { background: transparent; }
-  .input-area::-webkit-scrollbar-thumb { background: var(--border-bright); }
+  /* Animations */
+  @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  .ai { animation: fadeUp .45s ease-out forwards; }
+  .d1 { animation-delay:.06s;opacity:0; }
+  .d2 { animation-delay:.13s;opacity:0; }
+  .d3 { animation-delay:.20s;opacity:0; }
+  .d4 { animation-delay:.28s;opacity:0; }
 </style>
 </head>
 
-<body class="app-wrapper">
+<body>
 
-<!-- Header -->
 <header class="header">
-  <div class="logo-badge">
+  <div class="logo-wrap">
     <div class="logo-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-    <span class="logo-text">LP<span>Frame</span> AI</span>
-    <span class="status-chip">GEMINI POWERED</span>
-  </div>
-  <div style="display:flex;align-items:center;gap:16px;">
-    <span style="font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;">v1.0.0</span>
-    <div style="display:flex;gap:6px;">
-      <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
-      <div style="width:10px;height:10px;border-radius:50%;background:#ffbd2e;"></div>
-      <div style="width:10px;height:10px;border-radius:50%;background:#28ca41;"></div>
+    <span class="logo-text">LP<em>Frame</em> AI</span>
+    <div class="header-badge">
+      <i class="fa-solid fa-circle-check" style="font-size:10px;"></i>Gemini Powered
     </div>
+  </div>
+  <div class="kbd-hint">
+    <span class="kbd">Ctrl</span><span>+</span><span class="kbd">↵</span>
+    <span style="margin-left:4px;">で生成</span>
   </div>
 </header>
 
-<!-- Main layout -->
 <div class="main-layout">
 
   <!-- Left Panel -->
   <aside class="left-panel">
     <div class="panel-header">
-      <div class="panel-dot"></div>
-      <span class="panel-title">入力ソース</span>
+      <div class="panel-title"><div class="p-dot"></div>入力ソース</div>
     </div>
     <div class="input-area">
 
       <!-- API Key -->
-      <div class="api-key-row">
-        <label><i class="fa-solid fa-key" style="color:var(--accent);margin-right:6px;font-size:10px;"></i>API KEY</label>
-        <input type="password" class="api-key-input" id="apiKey" placeholder="Gemini API キーを入力...">
-        <i class="fa-regular fa-eye" id="eyeIcon" style="color:var(--text-dim);cursor:pointer;font-size:12px;" onclick="toggleKey()"></i>
-      </div>
-
-      <!-- Textarea -->
-      <div class="textarea-wrap" style="flex:1;min-height:280px;">
-        <textarea class="main-textarea" id="articleText" placeholder="アフィリエイト記事のテキストをここに貼り付けてください...
-
-例：
-・商品の特徴、メリット
-・ターゲットの悩みや課題
-・解決策としての商品説明
-・お客様の声
-・価格・キャンペーン情報　など
-
-Gemini AIが自動でLPの各セクションに振り分け、
-売れるワイヤーフレームを生成します。" oninput="updateCharCount(this)"></textarea>
-        <span class="char-count" id="charCount">0 文字</span>
-      </div>
-
-      <!-- Error box -->
-      <div class="error-box" id="errorBox" style="display:none;">
-        <i class="fa-solid fa-circle-exclamation" style="flex-shrink:0;margin-top:1px;"></i>
-        <span id="errorMsg"></span>
-      </div>
-
-      <!-- Section tags (shown after generation) -->
-      <div id="sectionTags" style="display:none;">
-        <div style="font-size:10px;color:var(--text-dim);margin-bottom:6px;font-family:'Space Mono',monospace;">生成セクション</div>
-        <div class="section-tags">
-          <span class="section-tag tag-hero"><i class="fa-solid fa-star" style="font-size:8px;margin-right:4px;"></i>HERO</span>
-          <span class="section-tag tag-problem"><i class="fa-solid fa-circle-question" style="font-size:8px;margin-right:4px;"></i>PROBLEM</span>
-          <span class="section-tag tag-solution"><i class="fa-solid fa-lightbulb" style="font-size:8px;margin-right:4px;"></i>SOLUTION</span>
-          <span class="section-tag tag-benefits"><i class="fa-solid fa-check" style="font-size:8px;margin-right:4px;"></i>BENEFITS</span>
-          <span class="section-tag tag-cta"><i class="fa-solid fa-arrow-right" style="font-size:8px;margin-right:4px;"></i>CTA</span>
+      <div>
+        <div class="f-label"><i class="fa-solid fa-key"></i>Gemini API キー</div>
+        <div class="api-key-row">
+          <input type="password" class="api-key-input" id="apiKey" placeholder="AIza...">
+          <button class="eye-btn" onclick="toggleKey()">
+            <i class="fa-regular fa-eye" id="eyeIcon"></i>
+          </button>
         </div>
       </div>
 
-      <!-- Generate button -->
+      <!-- Textarea -->
+      <div style="flex:1;display:flex;flex-direction:column;min-height:240px;">
+        <div class="f-label"><i class="fa-regular fa-file-lines"></i>アフィリエイトテキスト</div>
+        <div class="textarea-wrap" style="flex:1;">
+          <textarea class="main-textarea" id="articleText"
+            placeholder="記事テキストをここに貼り付けてください...
+
+例：
+・商品の特徴・メリット
+・ターゲットの悩みや課題
+・解決策としての商品説明
+・お客様の声・実績
+・価格・キャンペーン情報
+
+Gemini AI がセクション分割し、
+売れる LP を自動生成します。"
+            oninput="updateChar(this)"></textarea>
+          <span class="char-count" id="charCount">0 文字</span>
+        </div>
+      </div>
+
+      <!-- Error -->
+      <div class="error-box" id="errorBox" style="display:none;">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span id="errorMsg"></span>
+      </div>
+
+      <!-- Section tags -->
+      <div class="stags-wrap" id="stagWrap" style="display:none;">
+        <div class="stags-lbl"><i class="fa-solid fa-circle-check"></i>生成済みセクション</div>
+        <div class="stags">
+          <span class="stag s-hero">HERO</span>
+          <span class="stag s-problem">PROBLEM</span>
+          <span class="stag s-solution">SOLUTION</span>
+          <span class="stag s-benefits">BENEFITS</span>
+          <span class="stag s-cta">CTA</span>
+        </div>
+      </div>
+
+      <!-- Button -->
       <button class="gen-btn" id="genBtn" onclick="generateLP()">
         <i class="fa-solid fa-wand-magic-sparkles" style="margin-right:8px;"></i>
         LPワイヤーフレームを生成
@@ -596,326 +584,207 @@ Gemini AIが自動でLPの各セクションに振り分け、
 
   <!-- Right Panel -->
   <section class="right-panel">
-
-    <!-- Toolbar -->
     <div class="preview-toolbar">
       <div class="toolbar-left">
         <div class="view-toggle">
           <button class="toggle-btn active" id="pcBtn" onclick="setView('pc')">
-            <i class="fa-solid fa-display"></i> PC表示
+            <i class="fa-solid fa-display"></i>PC表示
           </button>
-          <button class="toggle-btn" id="mobileBtn" onclick="setView('mobile')">
-            <i class="fa-solid fa-mobile-screen-button"></i> スマホ表示
+          <button class="toggle-btn" id="mobBtn" onclick="setView('mobile')">
+            <i class="fa-solid fa-mobile-screen-button"></i>スマホ表示
           </button>
         </div>
-        <span style="font-size:11px;color:var(--text-dim);font-family:'Space Mono',monospace;" id="viewLabel">1000px</span>
+        <span class="view-lbl" id="viewLbl">960px</span>
       </div>
-      <div class="toolbar-actions">
-        <button class="toolbar-chip" onclick="copyHTML()" id="copyBtn" style="display:none;">
-          <i class="fa-regular fa-copy" style="margin-right:4px;"></i>HTML コピー
+      <div class="toolbar-right">
+        <button class="copy-btn" id="copyBtn" onclick="copyHTML()">
+          <i class="fa-regular fa-copy"></i>HTMLをコピー
         </button>
-        <span style="font-size:10px;color:var(--text-dim);font-family:'Space Mono',monospace;">
-          <i class="fa-solid fa-circle" style="color:#28ca41;font-size:8px;margin-right:4px;"></i>LIVE
-        </span>
+        <div class="live-tag"><i class="fa-solid fa-circle"></i>LIVE PREVIEW</div>
       </div>
     </div>
 
-    <!-- Preview area -->
     <div class="preview-scroll" id="previewScroll">
-
-      <!-- Empty state -->
       <div class="empty-state" id="emptyState">
         <div class="empty-icon">🎨</div>
         <div class="empty-title">プレビューエリア</div>
-        <div class="empty-sub">左パネルにアフィリエイトテキストを貼り付けて「生成」ボタンをクリックすると、ここにLPワイヤーフレームが表示されます</div>
-        <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px;width:100%;max-width:280px;">
-          <div style="height:12px;background:var(--bg-card);border-radius:4px;border:1px solid var(--border);opacity:0.5;"></div>
-          <div style="height:8px;background:var(--bg-card);border-radius:4px;border:1px solid var(--border);opacity:0.3;width:70%;"></div>
-          <div style="height:8px;background:var(--bg-card);border-radius:4px;border:1px solid var(--border);opacity:0.2;width:55%;"></div>
+        <div class="empty-sub">テキストを入力して「生成」ボタンを押すと、ここに LP が表示されます</div>
+        <div class="skel-wrap">
+          <div class="skel" style="opacity:.6;"></div>
+          <div class="skel" style="opacity:.4;width:72%;"></div>
+          <div class="skel" style="opacity:.25;width:52%;"></div>
         </div>
       </div>
-
-      <!-- LP Frame (hidden until generated) -->
       <div class="lp-frame" id="lpFrame" style="display:none;"></div>
-
     </div>
-
   </section>
 
 </div>
 
 <script>
-// ── State ──
 let currentView = 'pc';
 let generatedData = null;
 
-// ── Char count ──
-function updateCharCount(el) {
+function updateChar(el) {
   document.getElementById('charCount').textContent = el.value.length.toLocaleString() + ' 文字';
 }
-
-// ── Toggle API key visibility ──
 function toggleKey() {
-  const inp = document.getElementById('apiKey');
-  const icon = document.getElementById('eyeIcon');
-  if (inp.type === 'password') {
-    inp.type = 'text';
-    icon.className = 'fa-regular fa-eye-slash';
-  } else {
-    inp.type = 'password';
-    icon.className = 'fa-regular fa-eye';
-  }
+  const i = document.getElementById('apiKey');
+  const ic = document.getElementById('eyeIcon');
+  i.type = i.type === 'password' ? 'text' : 'password';
+  ic.className = i.type === 'password' ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash';
 }
-
-// ── View toggle ──
 function setView(mode) {
   currentView = mode;
-  const frame = document.getElementById('lpFrame');
-  const pcBtn = document.getElementById('pcBtn');
-  const mobileBtn = document.getElementById('mobileBtn');
-  const label = document.getElementById('viewLabel');
-
+  const f = document.getElementById('lpFrame');
+  const pb = document.getElementById('pcBtn');
+  const mb = document.getElementById('mobBtn');
   if (mode === 'pc') {
-    frame.classList.remove('mobile');
-    pcBtn.classList.add('active');
-    mobileBtn.classList.remove('active');
-    label.textContent = '1000px';
+    f.classList.remove('mobile');
+    pb.classList.add('active'); mb.classList.remove('active');
+    document.getElementById('viewLbl').textContent = '960px';
   } else {
-    frame.classList.add('mobile');
-    mobileBtn.classList.add('active');
-    pcBtn.classList.remove('active');
-    label.textContent = '375px';
+    f.classList.add('mobile');
+    mb.classList.add('active'); pb.classList.remove('active');
+    document.getElementById('viewLbl').textContent = '375px';
   }
 }
-
-// ── Show error ──
-function showError(msg) {
-  const box = document.getElementById('errorBox');
+function showErr(msg) {
   document.getElementById('errorMsg').textContent = msg;
-  box.style.display = 'flex';
-  setTimeout(() => box.style.display = 'none', 8000);
+  document.getElementById('errorBox').style.display = 'flex';
+  setTimeout(() => document.getElementById('errorBox').style.display = 'none', 8000);
 }
-function hideError() {
-  document.getElementById('errorBox').style.display = 'none';
-}
+function hideErr() { document.getElementById('errorBox').style.display = 'none'; }
 
-// ── Generate LP ──
-async function generateLP() {
-  const apiKey = document.getElementById('apiKey').value.trim();
-  const text = document.getElementById('articleText').value.trim();
-
-  if (!apiKey) { showError('Gemini API キーを入力してください。'); return; }
-  if (!text || text.length < 30) { showError('アフィリエイトテキストを入力してください（30文字以上）。'); return; }
-
-  hideError();
-  setLoading(true);
-
-  const systemPrompt = `あなたは凄腕のダイレクトレスポンスマーケターです。
-入力されたテキストを、コンバージョン率を最大化するLPのセクションに分割し、以下のJSONスキーマのみで出力してください。見出しやマイクロコピー（ボタン上の小さな誘導文）は、あなたが魅力的に補足・リライトしてください。
-
-出力はJSONのみ。マークダウンのコードブロックなし。余分なテキストなし。
-
-{
-  "hero": {
-    "catchphrase": "メインのキャッチコピー",
-    "sub_copy": "サブコピー",
-    "cta_text": "ボタンのテキスト"
-  },
-  "problem": {
-    "title": "読者の悩み（こんなお悩みありませんか？）",
-    "points": ["悩み1", "悩み2", "悩み3"]
-  },
-  "solution": {
-    "title": "解決策の提示",
-    "description": "商品の概要や、なぜ悩みを解決できるのか"
-  },
-  "benefits": {
-    "title": "3つのメリット",
-    "items": [
-      {"title": "メリット1", "desc": "説明"},
-      {"title": "メリット2", "desc": "説明"},
-      {"title": "メリット3", "desc": "説明"}
-    ]
-  },
-  "cta_bottom": {
-    "microcopy": "今すぐクリックさせるためのマイクロコピー",
-    "button_text": "最終CTAボタンのテキスト"
-  }
-}`;
-
-  try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: systemPrompt }] },
-          contents: [{ parts: [{ text: text }] }],
-          generationConfig: {
-            responseMimeType: 'application/json',
-            temperature: 0.7
-          }
-        })
-      }
-    );
-
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error?.message || `HTTP ${response.status}`);
-    }
-
-    const result = await response.json();
-    const raw = result.candidates?.[0]?.content?.parts?.[0]?.text;
-    if (!raw) throw new Error('Geminiからの応答が空です。');
-
-    // Parse JSON (strip any accidental fences)
-    const clean = raw.replace(/```json|```/g, '').trim();
-    const data = JSON.parse(clean);
-
-    generatedData = data;
-    renderLP(data);
-    document.getElementById('sectionTags').style.display = 'block';
-    document.getElementById('copyBtn').style.display = 'inline-flex';
-
-  } catch (err) {
-    showError('エラー: ' + err.message);
-  } finally {
-    setLoading(false);
-  }
-}
-
-// ── Loading state ──
 function setLoading(on) {
   const btn = document.getElementById('genBtn');
-  const scroll = document.getElementById('previewScroll');
-
-  // Remove old overlay
-  const old = document.getElementById('loadingOverlay');
+  const scr = document.getElementById('previewScroll');
+  const old = document.getElementById('loadOverlay');
   if (old) old.remove();
-
   if (on) {
     btn.disabled = true;
-    btn.innerHTML = `<span class="spinner"></span> <span style="margin-left:10px;">Gemini が分析中</span><span class="loading-dots"></span>`;
-
-    const overlay = document.createElement('div');
-    overlay.className = 'loading-overlay';
-    overlay.id = 'loadingOverlay';
-    overlay.innerHTML = `
-      <div class="loading-ring"></div>
-      <div class="loading-text">AI がLPを構造化中<span class="loading-dots"></span></div>
-      <div style="font-size:10px;color:var(--text-dim);font-family:'Space Mono',monospace;margin-top:4px;">gemini-2.5-flash</div>
-    `;
-    scroll.style.position = 'relative';
-    scroll.appendChild(overlay);
+    btn.innerHTML = `<span class="spinner"></span><span style="margin-left:10px;">Gemini が分析中</span><span class="ldots"></span>`;
+    const ov = document.createElement('div');
+    ov.className = 'loading-overlay'; ov.id = 'loadOverlay';
+    ov.innerHTML = `<div class="loading-ring"></div>
+      <div class="loading-lbl">AI が LP を構造化中<span class="ldots"></span></div>
+      <div class="loading-sub">gemini-2.5-flash</div>`;
+    scr.appendChild(ov);
   } else {
     btn.disabled = false;
     btn.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles" style="margin-right:8px;"></i>LPワイヤーフレームを生成`;
   }
 }
 
-// ── Render LP ──
-function renderLP(data) {
-  const frame = document.getElementById('lpFrame');
-  const emptyState = document.getElementById('emptyState');
+async function generateLP() {
+  const apiKey = document.getElementById('apiKey').value.trim();
+  const text   = document.getElementById('articleText').value.trim();
+  if (!apiKey)           { showErr('Gemini API キーを入力してください。'); return; }
+  if (text.length < 30)  { showErr('テキストを入力してください（30文字以上）。'); return; }
+  hideErr(); setLoading(true);
 
-  const icons = ['fa-triangle-exclamation', 'fa-face-sad-tear', 'fa-clock'];
+  const sys = `あなたは凄腕のダイレクトレスポンスマーケターです。入力されたテキストを、コンバージョン率を最大化するLPのセクションに分割し、以下のJSONスキーマのみで出力してください。見出しやマイクロコピーは魅力的に補足・リライトしてください。出力はJSONのみ。コードブロックなし。余分なテキストなし。
+{"hero":{"catchphrase":"キャッチコピー","sub_copy":"サブコピー","cta_text":"ボタンテキスト"},"problem":{"title":"悩みセクションタイトル","points":["悩み1","悩み2","悩み3"]},"solution":{"title":"解決策タイトル","description":"説明文"},"benefits":{"title":"メリットセクションタイトル","items":[{"title":"メリット1","desc":"説明"},{"title":"メリット2","desc":"説明"},{"title":"メリット3","desc":"説明"}]},"cta_bottom":{"microcopy":"マイクロコピー","button_text":"CTAボタンテキスト"}}`;
 
-  const problemItems = (data.problem?.points || []).map((p, i) => `
-    <div class="problem-item animate-in" style="animation-delay:${0.05 + i * 0.07}s;opacity:0;">
-      <div class="problem-icon"><i class="fa-solid ${icons[i % icons.length]}"></i></div>
-      <div class="problem-text">${escHtml(p)}</div>
-    </div>
-  `).join('');
-
-  const benefitNums = ['01', '02', '03'];
-  const benefitItems = (data.benefits?.items || []).map((b, i) => `
-    <div class="benefit-card animate-in" style="animation-delay:${0.1 + i * 0.08}s;opacity:0;">
-      <div class="benefit-num">${benefitNums[i] || String(i+1).padStart(2,'0')}</div>
-      <div class="benefit-title">${escHtml(b.title)}</div>
-      <div class="benefit-desc">${escHtml(b.desc)}</div>
-    </div>
-  `).join('');
-
-  frame.innerHTML = `
-    <!-- Hero -->
-    <div class="lp-hero animate-in">
-      <div class="hero-badge">✦ SPECIAL OFFER ✦</div>
-      <h1 class="hero-catch">${escHtml(data.hero?.catchphrase || '')}</h1>
-      <p class="hero-sub">${escHtml(data.hero?.sub_copy || '')}</p>
-      <div class="hero-cta-btn">${escHtml(data.hero?.cta_text || '今すぐチェック')}</div>
-      <div class="hero-scroll-hint">▼ SCROLL DOWN ▼</div>
-    </div>
-
-    <!-- Problem -->
-    <div class="lp-problem animate-in animate-in-delay1">
-      <div class="section-label">PROBLEM</div>
-      <h2 class="section-title">${escHtml(data.problem?.title || '')}</h2>
-      <div class="problem-list">${problemItems}</div>
-    </div>
-
-    <!-- Solution -->
-    <div class="lp-solution animate-in animate-in-delay2">
-      <div class="section-label solution-label">SOLUTION</div>
-      <h2 class="solution-title">${escHtml(data.solution?.title || '')}</h2>
-      <div class="solution-line"></div>
-      <p class="solution-desc">${escHtml(data.solution?.description || '')}</p>
-    </div>
-
-    <!-- Benefits -->
-    <div class="lp-benefits animate-in animate-in-delay3">
-      <h2 class="benefits-title">${escHtml(data.benefits?.title || '3つのメリット')}</h2>
-      <div class="benefits-grid">${benefitItems}</div>
-    </div>
-
-    <!-- CTA Bottom -->
-    <div class="lp-cta-bottom animate-in animate-in-delay4">
-      <p class="microcopy">${escHtml(data.cta_bottom?.microcopy || '')}</p>
-      <div class="cta-final-btn">${escHtml(data.cta_bottom?.button_text || '今すぐ申し込む')}</div>
-      <div class="cta-safety"><i class="fa-solid fa-lock" style="margin-right:4px;"></i>安心・安全・個人情報保護</div>
-    </div>
-  `;
-
-  emptyState.style.display = 'none';
-  frame.style.display = 'block';
-  if (currentView === 'mobile') frame.classList.add('mobile');
-
-  // Scroll to top of preview
-  document.getElementById('previewScroll').scrollTop = 0;
+  try {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`,
+      { method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          system_instruction:{parts:[{text:sys}]},
+          contents:[{parts:[{text}]}],
+          generationConfig:{responseMimeType:'application/json',temperature:0.7}
+        })
+      }
+    );
+    if (!res.ok) { const e=await res.json(); throw new Error(e.error?.message||`HTTP ${res.status}`); }
+    const result = await res.json();
+    const raw = result.candidates?.[0]?.content?.parts?.[0]?.text;
+    if (!raw) throw new Error('Gemini からの応答が空です。');
+    const data = JSON.parse(raw.replace(/```json|```/g,'').trim());
+    generatedData = data;
+    renderLP(data);
+    document.getElementById('stagWrap').style.display = 'flex';
+    document.getElementById('copyBtn').style.display  = 'inline-flex';
+  } catch(err) {
+    showErr('エラー: ' + err.message);
+  } finally {
+    setLoading(false);
+  }
 }
 
-// ── Copy HTML ──
+function renderLP(d) {
+  const icons = ['fa-triangle-exclamation','fa-face-sad-tear','fa-clock'];
+  const nums  = ['01','02','03'];
+
+  const probs = (d.problem?.points||[]).map((p,i)=>`
+    <div class="prob-item ai" style="animation-delay:${.05+i*.07}s;opacity:0;">
+      <div class="prob-icon"><i class="fa-solid ${icons[i%3]}"></i></div>
+      <div class="prob-text">${esc(p)}</div>
+    </div>`).join('');
+
+  const bens = (d.benefits?.items||[]).map((b,i)=>`
+    <div class="ben-card ai" style="animation-delay:${.10+i*.08}s;opacity:0;">
+      <div class="ben-num">${nums[i]||String(i+1).padStart(2,'0')}</div>
+      <div class="ben-card-title">${esc(b.title)}</div>
+      <div class="ben-card-desc">${esc(b.desc)}</div>
+    </div>`).join('');
+
+  document.getElementById('lpFrame').innerHTML = `
+    <div class="lp-hero ai">
+      <div class="hero-badge">✦ SPECIAL OFFER ✦</div>
+      <h1 class="hero-catch">${esc(d.hero?.catchphrase||'')}</h1>
+      <p class="hero-sub">${esc(d.hero?.sub_copy||'')}</p>
+      <div class="hero-cta">${esc(d.hero?.cta_text||'今すぐチェック')}</div>
+      <div class="hero-hint">▼ SCROLL DOWN ▼</div>
+    </div>
+    <div class="lp-problem ai d1">
+      <div class="lp-sec-label">PROBLEM</div>
+      <h2 class="lp-sec-title">${esc(d.problem?.title||'')}</h2>
+      <div class="prob-list">${probs}</div>
+    </div>
+    <div class="lp-solution ai d2">
+      <div class="lp-sec-label sol-label">SOLUTION</div>
+      <h2 class="sol-title">${esc(d.solution?.title||'')}</h2>
+      <div class="sol-divider"></div>
+      <p class="sol-desc">${esc(d.solution?.description||'')}</p>
+    </div>
+    <div class="lp-benefits ai d3">
+      <h2 class="ben-title">${esc(d.benefits?.title||'3つのメリット')}</h2>
+      <div class="ben-grid">${bens}</div>
+    </div>
+    <div class="lp-cta ai d4">
+      <p class="cta-micro">${esc(d.cta_bottom?.microcopy||'')}</p>
+      <div class="cta-btn-final">${esc(d.cta_bottom?.button_text||'今すぐ申し込む')}</div>
+      <div class="cta-safety"><i class="fa-solid fa-lock" style="margin-right:4px;opacity:.45;"></i>安心・安全・個人情報保護</div>
+    </div>`;
+
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('lpFrame').style.display    = 'block';
+  if (currentView==='mobile') document.getElementById('lpFrame').classList.add('mobile');
+  document.getElementById('previewScroll').scrollTop  = 0;
+}
+
 function copyHTML() {
   if (!generatedData) return;
-  const frame = document.getElementById('lpFrame');
-  navigator.clipboard.writeText(frame.outerHTML).then(() => {
+  navigator.clipboard.writeText(document.getElementById('lpFrame').outerHTML).then(()=>{
     const btn = document.getElementById('copyBtn');
     const orig = btn.innerHTML;
-    btn.innerHTML = '<i class="fa-solid fa-check" style="margin-right:4px;"></i>コピー完了！';
-    btn.style.color = 'var(--accent)';
-    setTimeout(() => { btn.innerHTML = orig; btn.style.color = ''; }, 2000);
+    btn.innerHTML = '<i class="fa-solid fa-check"></i>コピーしました';
+    btn.style.cssText += 'color:#059669;border-color:#6EE7B7;background:#ECFDF5;';
+    setTimeout(()=>{ btn.innerHTML=orig; btn.style.color=''; btn.style.borderColor=''; btn.style.background=''; }, 2200);
   });
 }
 
-// ── Escape HTML ──
-function escHtml(str) {
-  if (!str) return '';
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
-// ── Allow Enter in API key to focus textarea ──
-document.getElementById('apiKey').addEventListener('keydown', e => {
-  if (e.key === 'Enter') document.getElementById('articleText').focus();
+document.getElementById('apiKey').addEventListener('keydown', e=>{
+  if (e.key==='Enter') document.getElementById('articleText').focus();
 });
-
-// ── Keyboard shortcut: Ctrl+Enter to generate ──
-document.getElementById('articleText').addEventListener('keydown', e => {
-  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') generateLP();
+document.getElementById('articleText').addEventListener('keydown', e=>{
+  if ((e.ctrlKey||e.metaKey)&&e.key==='Enter') generateLP();
 });
 </script>
 </body>
