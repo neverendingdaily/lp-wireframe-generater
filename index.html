@@ -209,11 +209,11 @@
     font-family: 'Inter', sans-serif; font-weight: 600;
     border: 1px solid;
   }
-  .s-hero     { border-color:#FCD34D; color:#92400E; background:#FFFBEB; }
-  .s-problem  { border-color:#FCA5A5; color:#991B1B; background:#FEF2F2; }
-  .s-solution { border-color:#6EE7B7; color:#065F46; background:#ECFDF5; }
-  .s-benefits { border-color:#93C5FD; color:#1E40AF; background:#EFF6FF; }
-  .s-cta      { border-color:#C4B5FD; color:#5B21B6; background:#F5F3FF; }
+  .s-hero      { border-color:#FCD34D; color:#92400E; background:#FFFBEB; }
+  .s-problem   { border-color:#FCA5A5; color:#991B1B; background:#FEF2F2; }
+  .s-solution  { border-color:#6EE7B7; color:#065F46; background:#ECFDF5; }
+  .s-benefits  { border-color:#93C5FD; color:#1E40AF; background:#EFF6FF; }
+  .s-cta       { border-color:#C4B5FD; color:#5B21B6; background:#F5F3FF; }
 
   /* Generate button */
   .gen-btn {
@@ -528,11 +528,14 @@
 
       <div>
         <div class="f-label"><i class="fa-solid fa-key"></i>Gemini API キー</div>
-        <div class="api-key-row">
-          <input type="password" class="api-key-input" id="apiKey" placeholder="AIza...">
-          <button class="eye-btn" onclick="toggleKey()">
-            <i class="fa-regular fa-eye" id="eyeIcon"></i>
-          </button>
+        <div style="display:flex; gap:8px;">
+          <div class="api-key-row" style="flex:1;">
+            <input type="password" class="api-key-input" id="apiKey" placeholder="AIza...">
+            <button class="eye-btn" onclick="toggleKey()">
+              <i class="fa-regular fa-eye" id="eyeIcon"></i>
+            </button>
+          </div>
+          <button id="save-ak-btn" style="width: 42px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-surface); display: flex; justify-content: center; align-items: center; font-size: 16px; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-sm);" title="APIキーを保存">💾</button>
         </div>
       </div>
 
@@ -619,6 +622,39 @@ Gemini AI がセクション分割し、
 </div>
 
 <script>
+// ===== APIキー保存・復元機能 =====
+const saveAkBtn = document.getElementById('save-ak-btn');
+const akEl = document.getElementById('apiKey');
+
+window.addEventListener('DOMContentLoaded', function() {
+  const savedKey = localStorage.getItem('savedGeminiApiKey');
+  if (savedKey) {
+    akEl.value = savedKey;
+  }
+});
+
+if(saveAkBtn) {
+  saveAkBtn.addEventListener('click', function() {
+    const currentKey = akEl.value.trim();
+    if (currentKey) {
+      localStorage.setItem('savedGeminiApiKey', currentKey);
+      const origText = saveAkBtn.textContent;
+      saveAkBtn.textContent = '✓';
+      saveAkBtn.style.color = '#059669';
+      saveAkBtn.style.borderColor = '#34D399';
+      setTimeout(function(){
+        saveAkBtn.textContent = origText;
+        saveAkBtn.style.color = '';
+        saveAkBtn.style.borderColor = 'var(--border)';
+      }, 2000);
+    } else {
+      localStorage.removeItem('savedGeminiApiKey');
+      alert('APIキーの保存を解除しました');
+    }
+  });
+}
+// ================================
+
 let currentView = 'pc';
 let generatedData = null;
 
@@ -676,7 +712,7 @@ function setLoading(on) {
 async function generateLP() {
   const apiKey = document.getElementById('apiKey').value.trim();
   const text   = document.getElementById('articleText').value.trim();
-  if (!apiKey)           { showErr('Gemini API キーを入力してください。'); return; }
+  if (!apiKey)             { showErr('Gemini API キーを入力してください。'); return; }
   if (text.length < 30)  { showErr('テキストを入力してください（30文字以上）。'); return; }
   hideErr(); setLoading(true);
 
